@@ -46,15 +46,16 @@ app.post("/api/notes", (req, res) => {
       console.log(error);
     }
   });
-
   res.json(newNote);
 });
 
+//deletes post
 app.delete("/api/notes/:id", (req, res) => {
   const chosen = req.params.id;
   //finds matching id for array item and if searched it will remove it from array
   for (let i = 0; i < notes.length; i++) {
     if (chosen === notes[i].id) {
+      //removes object from array
       notes.splice(i, 1);
 
       writeFileAsync(
@@ -67,11 +68,6 @@ app.delete("/api/notes/:id", (req, res) => {
       });
     }
   }
-
-  // readFileAsync(
-  //   path.join(__dirname, "/db/db.json"),
-  //   "utf8"
-  // ).then(function () {});
 
   return res.json(notes);
 });
