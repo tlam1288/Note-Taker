@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-const notes = [{ title: "test", test: "hello!" }];
+const notes = [];
 
 app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
@@ -35,6 +35,9 @@ app.get("/api/notes", (req, res) => {
 app.post("/api/notes", (req, res) => {
   const newNote = req.body;
 
+  newNote.id = Math.floor(Math.random() * 1000);
+  console.log(newNote);
+
   notes.push(newNote);
 
   writeFileAsync(
@@ -49,10 +52,15 @@ app.post("/api/notes", (req, res) => {
   res.json(newNote);
 });
 
-app.get("/api/notes/:id", (req, res) => {
-  const chosen = req.params.character;
+app.get("/api/notes/:title", (req, res) => {
+  const chosen = req.params.title;
 
   console.log(chosen);
+  for (let i = 0; i < notes.length; i++) {
+    if (chosen === notes[i].title) {
+      return res.json(notes[i]);
+    }
+  }
 
   return res.json(false);
 });
