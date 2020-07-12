@@ -20,7 +20,6 @@ app.get("/notes", (req, res) => {
 });
 
 app.get("/api/notes", (req, res) => {
-  //const newNote = req.body;
   readFileAsync(path.join(__dirname, "/db/db.json"), "utf8").then(function (
     error
   ) {
@@ -37,8 +36,6 @@ app.post("/api/notes", (req, res) => {
   const newNote = req.body;
 
   newNote.id = Math.floor(Math.random() * 1000).toString();
-  console.log(newNote);
-
   notes.push(newNote);
 
   writeFileAsync(
@@ -53,7 +50,7 @@ app.post("/api/notes", (req, res) => {
   res.json(newNote);
 });
 
-app.get("/api/notes/:id", (req, res) => {
+app.delete("/api/notes/:id", (req, res) => {
   const chosen = req.params.id;
   //finds matching id for array item and if searched it will remove it from array
   for (let i = 0; i < notes.length; i++) {
@@ -71,12 +68,11 @@ app.get("/api/notes/:id", (req, res) => {
     }
   }
 
-  readFileAsync(
-    path.join(__dirname, "/db/db.json"),
-    "utf8"
-  ).then(function () {});
+  // readFileAsync(
+  //   path.join(__dirname, "/db/db.json"),
+  //   "utf8"
+  // ).then(function () {});
 
-  //res.sendStatus(200);
   return res.json(notes);
 });
 
