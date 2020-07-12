@@ -32,10 +32,11 @@ app.get("/api/notes", (req, res) => {
   return res.json(notes);
 });
 
+//creates new notes with unique id
 app.post("/api/notes", (req, res) => {
   const newNote = req.body;
 
-  newNote.id = Math.floor(Math.random() * 1000);
+  newNote.id = Math.floor(Math.random() * 1000).toString();
   console.log(newNote);
 
   notes.push(newNote);
@@ -52,17 +53,31 @@ app.post("/api/notes", (req, res) => {
   res.json(newNote);
 });
 
-app.get("/api/notes/:title", (req, res) => {
-  const chosen = req.params.title;
-
-  console.log(chosen);
+app.get("/api/notes/:id", (req, res) => {
+  const chosen = req.params.id;
+  //finds matching id for array item and if searched it will remove it from array
   for (let i = 0; i < notes.length; i++) {
-    if (chosen === notes[i].title) {
-      return res.json(notes[i]);
+    if (chosen === notes[i].id) {
+      notes.splice(i, 1);
+
+      writeFileAsync(
+        path.join(__dirname, "/db/db.json"),
+        JSON.stringify(notes)
+      ).then(function (error) {
+        if (error) {
+          console.log(error);
+        }
+      });
     }
   }
 
-  return res.json(false);
+  readFileAsync(
+    path.join(__dirname, "/db/db.json"),
+    "utf8"
+  ).then(function () {});
+
+  //res.sendStatus(200);
+  return res.json(notes);
 });
 
 app.get("*", (req, res) => {
