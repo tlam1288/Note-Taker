@@ -12,6 +12,9 @@ This was my first application to link the front and back end. Express.js was use
 
 ## How it looks
 
+- GitHub: https://github.com/tlam1288/Note-Taker
+- Heroku: https://infinite-refuge-80873.herokuapp.com/
+
 ![](images/note1.png)
 ![](images/note2.png)
 ![](images/note3.png)
